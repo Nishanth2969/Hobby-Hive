@@ -62,6 +62,7 @@ In the root of your project, run:
 python manage.py runserver
 ```
 
+
 In the frontend directory, run:
 ```bash
 npm start
