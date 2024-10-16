@@ -16,6 +16,11 @@ function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert('Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.');
+      return;
+    }
 
     if (password !== confirm_password) {
       alert('Passwords do not match!');
@@ -79,6 +84,9 @@ function Signup() {
               onChange={(e) => setPassword(e.target.value)} 
               required 
             />
+            <small className="form-text text-muted">
+              Must be 8 characters or more with at least one uppercase, one lowercase, one number, and one special character.
+            </small>
           </div>
           <div className="mb-3">
             <label htmlFor="confirm_password" className="form-label">Confirm Password</label>
@@ -92,7 +100,7 @@ function Signup() {
               required 
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Sign Up</button>
+          <button type="submit" className="btn w-100" style={{ backgroundColor: '#ff7f50', color: 'white' }}>Sign Up</button>
         </form>
         <p className="text-center mt-3 mb-0">
           Already have an account? <Link to="/login">Login</Link>

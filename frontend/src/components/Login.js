@@ -54,7 +54,7 @@ function Login({ setIsAuthenticated }) {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Login</button>
+          <button type="submit" className="btn w-100" style={{ backgroundColor: '#ff7f50', color: 'white' }}>Login</button>
         </form>
         <p className="text-center mt-3 mb-0">
           Don't have an account? <Link to="/signup">Create Account</Link>
