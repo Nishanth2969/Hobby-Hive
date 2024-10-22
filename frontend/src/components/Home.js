@@ -1,31 +1,50 @@
-import React, { useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../utils/axiosConfig';
+import { removeToken } from '../utils/auth';
 
-const Home = ({ setIsAuthenticated }) => {
+function Home({ setIsAuth }) {
   const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    document.title = 'HobbyHive';
+    const verifyAuth = async () => {
+      try {
+        const response = await axiosInstance.get('/api/auth/home/');
+        setUserData(response.data);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          handleLogout();
+        }
+      }
+    };
+
+    verifyAuth();
   }, []);
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8000/api/auth/logout/');
-      setIsAuthenticated(false);
-      navigate('/login');
+      await axiosInstance.post('/api/auth/logout/');
     } catch (error) {
-      console.error('Logout error:', error);
-      alert('Logout failed');
+      console.error('Logout failed:', error);
+    } finally {
+      removeToken();
+      setIsAuth(false);
+      navigate('/login');
     }
   };
 
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Welcome to HobbyHive</h1>
+    <div>
+      <h1>Welcome to Home Page</h1>
+      <p>{userData.message}</p>
       <button onClick={handleLogout}>Logout</button>
     </div>
   );
-};
+}
 
 export default Home;
